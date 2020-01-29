@@ -1,0 +1,478 @@
+<!DOCTYPE html>
+<html lang="en">
+  <!-- prettier-ignore -->
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <link id="favicon" rel="icon" href="https://cdn.glitch.com/689811be-7150-4483-9c82-83d9bc7ca0f8%2Ffavicon.ico?v=1580269038427" type="image/x-icon">
+
+    <!-- Bootstrap -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous" />
+    <!-- highlight.js -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@9.18.0/build/styles/default.min.css" />
+
+    <title>Issue tracker – Ty Mick</title>
+  </head>
+
+  <body style="background-color: #dee2e6;">
+    <div class="container my-5">
+      <h1 class="mb-4">Issue tracker microservice</h1>
+
+      <!-- API test front end -->
+      <div class="card mb-4">
+        <div class="card-body">
+          <h4 class="mb-3">Test this API:</h4>
+
+          <!-- Set project name for all tests -->
+          <form id="setProject" class="was-validated mb-4">
+            <div class="form-group">
+              <label for="projectName"
+                >Set the project name for all tests below</label
+              >
+              <div class="input-group">
+                <div class="input-group-prepend">
+                  <div class="input-group-text">/api/issues/</div>
+                </div>
+                <input
+                  id="projectName"
+                  name="projectname"
+                  type="text"
+                  class="form-control"
+                  style="max-width: 12em;"
+                  required
+                />
+              </div>
+            </div>
+          </form>
+
+          <!-- Add a new issue -->
+          <form id="addNewIssue" class="mb-4">
+            <h5>Add a new issue</h5>
+
+            <div class="form-row">
+              <div class="form-group col-sm-6 col-md-4 col-lg-3">
+                <label for="addIssueTitle"
+                  >Issue title
+                  <small class="text-muted">(required)</small></label
+                >
+                <input
+                  type="text"
+                  class="form-control"
+                  id="addIssueTitle"
+                  name="issue_title"
+                  required
+                />
+              </div>
+
+              <div class="form-group col-sm-6 col-md-4 col-lg-3">
+                <label for="addIssueText"
+                  >Issue text
+                  <small class="text-muted">(required)</small></label
+                >
+                <input
+                  type="text"
+                  class="form-control"
+                  id="addIssueText"
+                  name="issue_text"
+                  required
+                />
+              </div>
+
+              <div class="form-group col-sm-6 col-md-4 col-lg-3">
+                <label for="addCreatedBy"
+                  >Created by
+                  <small class="text-muted">(required)</small></label
+                >
+                <input
+                  type="text"
+                  class="form-control"
+                  id="addCreatedBy"
+                  name="created_by"
+                  required
+                />
+              </div>
+
+              <div class="form-group col-sm-6 col-md-4 col-lg-3">
+                <label for="addAssignedTo">Assigned to</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="addAssignedTo"
+                  name="assigned_to"
+                />
+              </div>
+
+              <div class="form-group col-sm-6 col-md-4 col-lg-3">
+                <label for="addStatusText">Status text</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="addStatusText"
+                  name="status_text"
+                />
+              </div>
+            </div>
+
+            <button type="submit" class="btn btn-primary">POST</button>
+          </form>
+
+          <!-- Get issues -->
+          <form id="getIssues" class="mb-4">
+            <h5>Get issues</h5>
+
+            <div class="form-row">
+              <div class="form-group col-sm-6 col-md-4 col-lg-3">
+                <label for="getId">Issue <code>_id</code> filter </label>
+                <input type="text" class="form-control" id="getId" name="_id" />
+              </div>
+
+              <div class="form-group col-sm-6 col-md-4 col-lg-3">
+                <label for="getIssueTitle">Issue title filter</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="getIssueTitle"
+                  name="issue_title"
+                />
+              </div>
+
+              <div class="form-group col-sm-6 col-md-4 col-lg-3">
+                <label for="getIssueText">Issue text filter</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="getIssueText"
+                  name="issue_text"
+                />
+              </div>
+
+              <div class="form-group col-sm-6 col-md-4 col-lg-3">
+                <label for="getCreatedBy">Created-by filter</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="getCreatedBy"
+                  name="created_by"
+                />
+              </div>
+
+              <div class="form-group col-sm-6 col-md-4 col-lg-3">
+                <label for="getAssignedTo">Assigned-to filter</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="getAssignedTo"
+                  name="assigned_to"
+                />
+              </div>
+
+              <div class="form-group col-sm-6 col-md-4 col-lg-3">
+                <label for="getStatusText">Status text filter</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="getStatusText"
+                  name="status_text"
+                />
+              </div>
+
+              <div class="form-group col-sm-6 col-md-4 col-lg-3">
+                <label for="getCreatedOn">Created-on filter</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="getCreatedOn"
+                  name="created_on"
+                />
+              </div>
+
+              <div class="form-group col-sm-6 col-md-4 col-lg-3">
+                <label for="getUpdatedOn">Updated-on filter</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="getUpdatedOn"
+                  name="updated_on"
+                />
+              </div>
+
+              <div class="form-group col-sm-6 col-md-4 col-lg-3">
+                <label for="getOpen">Open-status filter</label>
+                <select class="form-control" id="getOpen" name="open">
+                  <option></option>
+                  <option><code>true</code></option>
+                  <option><code>false</code></option>
+                </select>
+              </div>
+            </div>
+
+            <button type="submit" class="btn btn-primary">GET</button>
+          </form>
+
+          <!-- Update an issue -->
+          <form id="updateIssue" class="mb-4">
+            <h5>Update an issue</h5>
+
+            <div class="form-row">
+              <div class="form-group col-sm-6 col-md-4 col-lg-3">
+                <label for="updateId"
+                  >Issue <code>_id</code>
+                  <small class="text-muted">(required)</small></label
+                >
+                <input
+                  type="text"
+                  class="form-control"
+                  id="updateId"
+                  name="_id"
+                  required
+                />
+              </div>
+
+              <div class="form-group col-sm-6 col-md-4 col-lg-3">
+                <label for="updateIssueTitle">Issue title update</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="updateIssueTitle"
+                  name="issue_title"
+                />
+              </div>
+
+              <div class="form-group col-sm-6 col-md-4 col-lg-3">
+                <label for="updateIssueText">Issue text update</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="updateIssueText"
+                  name="issue_text"
+                />
+              </div>
+
+              <div class="form-group col-sm-6 col-md-4 col-lg-3">
+                <label for="updateCreatedBy">Created-by update</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="updateCreatedBy"
+                  name="created_by"
+                />
+              </div>
+
+              <div class="form-group col-sm-6 col-md-4 col-lg-3">
+                <label for="updateAssignedTo">Assigned-to update</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="updateAssignedTo"
+                  name="assigned_to"
+                />
+              </div>
+
+              <div class="form-group col-sm-6 col-md-4 col-lg-3">
+                <label for="updateStatusText">Status text update</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="updateStatusText"
+                  name="status_text"
+                />
+              </div>
+
+              <div class="form-group col-sm-6 col-md-4 col-lg-3">
+                <label for="updateOpen">Open-status update</label>
+                <select class="form-control" id="updateOpen" name="open">
+                  <option></option>
+                  <option><code>true</code></option>
+                  <option><code>false</code></option>
+                </select>
+              </div>
+            </div>
+
+            <button type="submit" class="btn btn-primary">PUT</button>
+          </form>
+
+          <!-- Delete an issue -->
+          <form id="deleteIssue">
+            <h5>Delete an issue</h5>
+
+            <div class="form-row">
+              <div class="form-group col-sm-6 col-md-4 col-lg-3">
+                <label for="deleteId"
+                  >Issue <code>_id</code> to delete
+                  <small class="text-muted">(required)</small></label
+                >
+                <input
+                  type="text"
+                  class="form-control"
+                  id="deleteId"
+                  name="_id"
+                  required
+                />
+              </div>
+            </div>
+
+            <button type="submit" class="btn btn-primary">DELETE</button>
+          </form>
+
+          <!-- API output -->
+          <div
+            class="modal fade"
+            id="apiOutputModal"
+            tabindex="-1"
+            role="dialog"
+            aria-labelledby="apiOutputLabel"
+            aria-hidden="true"
+          >
+            <div class="modal-dialog" role="document">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title" id="apiOutputLabel">
+                    API response for project
+                    <span id="outputProjectName"></span>:
+                  </h5>
+                  <button
+                    type="button"
+                    class="close"
+                    data-dismiss="modal"
+                    aria-label="Close"
+                  >
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+                <div class="modal-body">
+                  <pre id="apiOutput" class="hljs bg-white mb-0"></pre>
+                </div>
+                <div class="modal-footer">
+                  <button
+                    type="button"
+                    class="btn btn-secondary"
+                    data-dismiss="modal"
+                  >
+                    Close
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Explanation -->
+      <p class="lead font-italic">
+        View the source on
+        <a href="https://github.com/tywmick/issue-tracker">GitHub</a>
+        or
+        <a href="https://glitch.com/edit/#!/ty-issue-tracker">Glitch</a>.
+      </p>
+
+      <p>
+        I created this microservice in fulfillment of
+        <a href="https://freecodecamp.org">freeCodeCamp</a>'s Information
+        Security and Quality Assurance Project
+        <a
+          href="https://www.freecodecamp.org/learn/information-security-and-quality-assurance/information-security-and-quality-assurance-projects/issue-tracker"
+          >Issue Tracker</a
+        >, using <a href="https://nodejs.org/en/">Node.js</a>,
+        <a href="https://expressjs.com/">Express</a>,
+        <a href="https://mongodb.github.io/node-mongodb-native/">MongoDB</a>,
+        <a href="https://www.chaijs.com/">Chai</a>, and
+        <a href="https://helmetjs.github.io/">Helmet</a>. The above front end
+        API test also uses <a href="https://getbootstrap.com/">Bootstrap</a>,
+        <a href="https://jquery.com/">jQuery</a>, and
+        <a href="https://highlightjs.org/">highlight.js</a>.
+      </p>
+
+      <p>
+        You can read the functional tests I wrote on
+        <a
+          href="https://github.com/tywmick/issue-tracker/tree/glitch/tests/2_functional-tests.js"
+          >GitHub</a
+        >
+        or
+        <a
+          href="https://glitch.com/edit/#!/ty-issue-tracker?path=tests/2_functional-tests.js"
+          >Glitch</a
+        >. To run the tests yourself, create a MongoDB database, fork/remix this
+        project, create a <code>.env</code> file with
+        <code>DB="{your MongoDB URI}"</code> and <code>NODE_ENV="test"</code>,
+        start the server, and look at the server console logs.
+      </p>
+
+      <p>This project fulfills the following user stories:</p>
+
+      <ol>
+        <li>Prevent cross site scripting(XSS attack).</li>
+
+        <li>
+          I can <strong>POST</strong>
+          <code>/api/issues/{projectname}</code> with form data containing
+          required <code>issue_title</code>, <code>issue_text</code>,
+          <code>created_by</code>, and optional <code>assigned_to</code> and
+          <code>status_text</code>.
+        </li>
+
+        <li>
+          The object saved (and returned) will include all of those fields
+          (blank for optional no input) and also include
+          <code>created_on</code> (date/time),
+          <code>updated_on</code> (date/time), <code>open</code> (boolean,
+          <code>true</code> for open, <code>false</code> for closed), and
+          <code>_id</code>.
+        </li>
+
+        <li>
+          I can <strong>PUT</strong> <code>/api/issues/{projectname}</code> with
+          a <code>_id</code> and any fields in the object with a value to object
+          said object. Returned will be <code>"successfully updated"</code> or
+          <code>"could not update " + _id</code>. This should always update
+          <code>updated_on</code>. If no fields are sent return
+          <code>"no updated field sent"</code>.
+        </li>
+
+        <li>
+          I can <strong>DELETE</strong>
+          <code>/api/issues/{projectname}</code> with a <code>_id</code> to
+          completely delete an issue. If no <code>_id</code> is sent return
+          <code>"_id error"</code>, success: <code>"deleted " + _id</code>,
+          failed: <code>"could not delete " + _id</code>.
+        </li>
+
+        <li>
+          I can <strong>GET</strong> <code>/api/issues/{projectname}</code> for
+          an array of all issues on that specific project with all the
+          information for each issue as was returned when posted.
+        </li>
+
+        <li>
+          I can filter my get request by also passing along any field and value
+          in the query (e.g., <code>/api/issues/{project}?open=false</code>). I
+          can pass along as many fields/values as I want.
+        </li>
+
+        <li>All 11 functional tests are complete and passing.</li>
+      </ol>
+    </div>
+
+    <!-- Glitch button -->
+    <div
+      class="glitchButton"
+      style="position:absolute;top:20px;right:20px;"
+    ></div>
+    <script src="https://button.glitch.me/button.js"></script>
+
+    <!-- prettier-ignore -->
+    <span>
+      <!-- jQuery -->
+      <script src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+      <!-- Popper -->
+      <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+      <!-- Bootstrap -->
+      <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>      
+      <!-- highlight.js -->
+      <script src="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@9.18.0/build/highlight.min.js"></script>
+    </span>
+
+    <!-- Page scripts -->
+    <script type="text/javascript" src="/public/api-tests.js"></script>
+  </body>
+</html>
