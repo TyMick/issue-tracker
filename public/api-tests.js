@@ -25,11 +25,19 @@ $(function() {
   $("#addNewIssue").submit(function() {
     event.preventDefault();
     if ($("#projectName").val()) {
+      $("button").attr("disabled", true);
+      $("button", this).html(
+        '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span><span class="sr-only">Uploading...</span>'
+      );
       $.ajax({
         url: "/api/issues/" + $("#projectName").val(),
         type: "post",
         data: getFormDataObject("addNewIssue"),
-        success: displayResult
+        success: function(result) {
+          displayResult(result);
+          $("#addNewIssue button").html("POST");
+          $("button").removeAttr("disabled");
+        }
       });
     } else {
       $("#projectName").focus();
@@ -39,11 +47,19 @@ $(function() {
   $("#getIssues").submit(function() {
     event.preventDefault();
     if ($("#projectName").val()) {
+      $("button").attr("disabled", true);
+      $("button", this).html(
+        '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span><span class="sr-only">Uploading...</span>'
+      );
       $.ajax({
         url: "/api/issues/" + $("#projectName").val(),
         type: "get",
         data: serializeWithoutBlanks("getIssues"),
-        success: displayResult
+        success: function(result) {
+          displayResult(result);
+          $("#getIssues button").html("GET");
+          $("button").removeAttr("disabled");
+        }
       });
     } else {
       $("#projectName").focus();
@@ -53,11 +69,19 @@ $(function() {
   $("#updateIssue").submit(function() {
     event.preventDefault();
     if ($("#projectName").val()) {
+      $("button").attr("disabled", true);
+      $("button", this).html(
+        '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span><span class="sr-only">Uploading...</span>'
+      );
       $.ajax({
         url: "/api/issues/" + $("#projectName").val(),
         type: "put",
         data: getFormDataObject("updateIssue"),
-        success: displayResult
+        success: function(result) {
+          displayResult(result);
+          $("#updateIssue button").html("PUT");
+          $("button").removeAttr("disabled");
+        }
       });
     } else {
       $("#projectName").focus();
@@ -67,11 +91,19 @@ $(function() {
   $("#deleteIssue").submit(function() {
     event.preventDefault();
     if ($("#projectName").val()) {
+      $("button").attr("disabled", true);
+      $("button", this).html(
+        '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span><span class="sr-only">Uploading...</span>'
+      );
       $.ajax({
         url: "/api/issues/" + $("#projectName").val(),
         type: "delete",
         data: getFormDataObject("deleteIssue"),
-        success: displayResult
+        success: function(result) {
+          displayResult(result);
+          $("#deleteIssue button").html("DELETE");
+          $("button").removeAttr("disabled");
+        }
       });
     } else {
       $("#projectName").focus();
